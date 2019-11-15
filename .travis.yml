@@ -1,0 +1,23 @@
+dist: xenial
+language: generic
+
+services:
+  - docker
+
+script:
+  - docker run
+    -v $TRAVIS_BUILD_DIR/build:/build
+    -v $TRAVIS_BUILD_DIR/build.sh:/build.sh
+    -v $TRAVIS_BUILD_DIR/inputs.list:/inputs.list
+    --entrypoint=./build.sh
+    centos:7.7.1908
+
+deploy:
+  provider: releases
+  api_key:
+    secure: WHNaHX43GmspEmfzNmMZIMmaIZchxFTMly2Iif8qLBqG75+Zh6vzlDWcnFvdaN6lyP507Q16YeoVr/2v4+C6JJkQ2IMrILqh/6rEtlIXnfU+v9QSBHW6daBumPIIDw24ZJmrqdRBVV0jrPYwc0nsY2kQ0qrPGn+9OMZ3uhhprnr3AsbliJhhV0htE95s64gern5yZZljdWmpB7KtDZYBI9JmROLBym8/tDlbPF1uujGY0MNUWwDEdphxdK2yvIpaSJz5H667JNG/TsyLzkV6O4zDLaRcboTVgWACiJqW8hnpgMP1YjKM18J43UEGF/lKk5p+YZX5GwvyAecAUJWyljOv9WU25G0WxbbOf04iuhpD9Ej9y5bMaSFBLPpb3frQcyPiXSHQtWVqsU+V56bQaY4zoygGaYuA/bTpTuEFeKHDVU01RUymG/G/fUIcPBpsvkQlC6BVy5pUvt9En00r6GY3CU6ICsvbZL1u5x3Z+4lkf7HUFYQT0chjIfcxC7jKJnSTV5/pp7k5WS7lNoCL+FdbryyLlkk2p8IB+VFDwJT/tTXbTIm7lpwqHS7t3q0pmPrT/OqXNJBjeh5o9h2gSkOqx8DSJ9lNAAKqN+dB1XBNNsplyDePJbNj5eAL3F0Sk6/j9YX+o0FXVOU3ig6MvJ206KN/zbeawS++YByUohM=
+  file_glob: true
+  file: build/*.rpm
+  skip_cleanup: true
+  on:
+    tags: true
